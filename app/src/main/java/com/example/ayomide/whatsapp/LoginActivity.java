@@ -22,7 +22,6 @@ import com.rengwuxian.materialedittext.MaterialEditText;
 public class LoginActivity extends AppCompatActivity
 {
 
-    FirebaseUser currentUser;
     FirebaseAuth mAuth;
 
     private Button LoginButton, PhoneLoginButton;
@@ -39,7 +38,7 @@ public class LoginActivity extends AppCompatActivity
 
 
         mAuth = FirebaseAuth.getInstance();
-        currentUser = mAuth.getCurrentUser();
+
         
         InitializeFields();
 
@@ -117,24 +116,14 @@ public class LoginActivity extends AppCompatActivity
     }
 
 
-    @Override
-    protected void onStart()
-    {
-        super.onStart();
-
-        //if user isn't authenticated
-        if(currentUser != null)
-        {
-            SendUserToMainActivity();
-        }
-    }
 
 
 
-    private void SendUserToMainActivity()
-    {
-        Intent loginIntent = new Intent(LoginActivity.this, MainActivity.class);
-        startActivity(loginIntent);
+    private void SendUserToMainActivity() {
+        Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
+        mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(mainIntent);
+        finish();
     }
 
     private void SendUserToRegisterActivity()
