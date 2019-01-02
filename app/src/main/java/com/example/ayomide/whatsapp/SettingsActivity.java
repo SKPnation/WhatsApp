@@ -12,8 +12,11 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 import java.util.HashMap;
@@ -24,8 +27,8 @@ public class SettingsActivity extends AppCompatActivity
 {
 
     private Button UpdateAccountSettings;
-    private MaterialEditText Username, UserStatus;
-    private CircleImageView UserProfileImage;
+    private MaterialEditText userName, userStatus;
+    private CircleImageView userProfileImage;
 
     private String currentUserID;
     FirebaseAuth mAuth;
@@ -45,6 +48,10 @@ public class SettingsActivity extends AppCompatActivity
 
         InitializeFields();
 
+
+        userName.setVisibility( View.INVISIBLE );
+
+
         UpdateAccountSettings.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View view)
@@ -52,6 +59,9 @@ public class SettingsActivity extends AppCompatActivity
                 UpdateSettings();
             }
         });
+
+
+        RetrieveUserInfo();
     }
 
 
@@ -59,16 +69,16 @@ public class SettingsActivity extends AppCompatActivity
     {
 
         UpdateAccountSettings = findViewById( R.id.update_settings_button );
-        Username = findViewById( R.id.set_user_name );
-        UserStatus = findViewById( R.id.set_profile_status );
-        UserProfileImage = findViewById( R.id.set_profile_image );
+        userName = findViewById( R.id.set_user_name );
+        userStatus = findViewById( R.id.set_profile_status );
+        userProfileImage = findViewById( R.id.set_profile_image );
     }
 
 
     private void UpdateSettings()
     {
-        String setUserName = Username.getText().toString();
-        String setStatus = UserStatus.getText().toString();
+        String setUserName = userName.getText().toString();
+        String setStatus = userStatus.getText().toString();
 
         if(TextUtils.isEmpty(setUserName))
         {
@@ -89,7 +99,8 @@ public class SettingsActivity extends AppCompatActivity
             RootRef.child("Users").child(currentUserID).setValue(ProfileMap)
                     .addOnCompleteListener( new OnCompleteListener<Void>() {
                         @Override
-                        public void onComplete(@NonNull Task<Void> task) {
+                        public void onComplete(@NonNull Task<Void> task)
+                        {
                             if(task.isSuccessful())
                             {
                                 SendUserToMainActivity();
@@ -105,8 +116,49 @@ public class SettingsActivity extends AppCompatActivity
         }
     }
 
+    private void RetrieveUserInfo()
+    {
+        RootRef.child("Users").child(currentUserID)
+                .addValueEventListener( new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot)
+                    {
+                        if((dataSnapshot.exists()) && (dataSnapshot.hasChild("name") && (dataSnapshot.hasChild("status"))))
+                         {
+                             String retrieveUserName = dataSnapshot.child("name").getValue().toString();
+                             String retrieveStatus = dataSnapshot.child("status").getValue().toString();
+                             //String retrieveProfileImage = dataSnapshot.child("image").getValue().toString();
 
-    private void SendUserToMainActivity() {
+                             userName.setText(retrieveUserName);
+                             userStatus.setText(retrieveStatus);
+
+                         }
+                         else if((dataSnapshot.exists()) && (dataSnapshot.hasChild("name")))
+                         {
+                             String retrieveUserName = dataSnapshot.child("name").getValue().toString();
+                             String retrieveStatus = dataSnapshot.child("status").getValue().toString();
+
+                             userName.setText(retrieveUserName);
+                             userStatus.setText(retrieveStatus);
+
+                         }
+                         else
+                             {
+                                 userName.setVisibility( View.VISIBLE );
+                                 Toast.makeText(SettingsActivity.this, "Please set & update your profile information", Toast.LENGTH_SHORT).show();
+                             }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+    }
+
+
+    private void SendUserToMainActivity()
+    {
         Intent mainIntent = new Intent(SettingsActivity.this, MainActivity.class);
         mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(mainIntent);
