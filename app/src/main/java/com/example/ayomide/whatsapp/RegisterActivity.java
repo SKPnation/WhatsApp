@@ -101,11 +101,11 @@ public class RegisterActivity extends AppCompatActivity
                                     loadingBar.dismiss();
                                 }
                                 else
-                                    {
-                                        String message = task.getException().toString();
-                                        Toast.makeText( RegisterActivity.this, "Error : " + message, Toast.LENGTH_SHORT ).show();
-                                        loadingBar.dismiss();
-                                    }
+                                {
+                                    String message = task.getException().toString();
+                                    Toast.makeText( RegisterActivity.this, "Error : " + message, Toast.LENGTH_SHORT ).show();
+                                    loadingBar.dismiss();
+                                }
                             }
                         });
             }

@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 
 
 import com.example.ayomide.whatsapp.Adapter.TabsAccessorAdapter;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity
@@ -20,12 +21,16 @@ public class MainActivity extends AppCompatActivity
     private TabsAccessorAdapter myTabsAccessorAdapter;
 
     FirebaseUser currentUser;
+    FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_main );
+
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
 
         mToolbar = findViewById(R.id.main_page_toolbar);
         setSupportActionBar(mToolbar);
