@@ -42,7 +42,7 @@ public class RegisterActivity extends AppCompatActivity
 
 
         mAuth = FirebaseAuth.getInstance();
-        RootRef = FirebaseDatabase.getInstance().getReference();
+        RootRef = FirebaseDatabase.getInstance().getReference( );
 
         InitializeFields();
 
