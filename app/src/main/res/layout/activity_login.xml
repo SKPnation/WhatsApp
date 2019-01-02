@@ -36,6 +36,8 @@
                 android:layout_marginRight="17dp"
                 android:drawableStart="@drawable/ic_email_black_24dp"
                 app:met_floatingLabel="normal"
+                android:drawablePadding="5dp"
+                android:singleLine="true"
                 android:hint="Email"/>
 
             <com.rengwuxian.materialedittext.MaterialEditText
@@ -48,7 +50,9 @@
                 android:layout_marginRight="17dp"
                 android:drawableStart="@drawable/ic_lock_black_24dp"
                 app:met_floatingLabel="normal"
-                android:hint="Password"/>
+                android:drawablePadding="5dp"
+                android:singleLine="true"
+                android:hint="Password" />
 
             <TextView
                 android:id="@+id/forgot_password_link"

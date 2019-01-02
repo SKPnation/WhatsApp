@@ -76,7 +76,7 @@ public class RegisterActivity extends AppCompatActivity
 
         if(TextUtils.isEmpty(email))
         {
-            Toast.makeText(this, "Please enter email...", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please enter a valid email...", Toast.LENGTH_SHORT).show();
         }
         if(TextUtils.isEmpty(password))
         {
@@ -103,7 +103,7 @@ public class RegisterActivity extends AppCompatActivity
                                 else
                                 {
                                     String message = task.getException().toString();
-                                    Toast.makeText( RegisterActivity.this, "Error : " + message, Toast.LENGTH_SHORT ).show();
+                                    Toast.makeText( RegisterActivity.this, "Error : " + message, Toast.LENGTH_LONG ).show();
                                     loadingBar.dismiss();
                                 }
                             }
