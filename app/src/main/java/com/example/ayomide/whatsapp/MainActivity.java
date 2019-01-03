@@ -150,10 +150,10 @@ public class MainActivity extends AppCompatActivity
         builder.setTitle("Enter Group Name :");
 
         final MaterialEditText groupNameField = new MaterialEditText(MainActivity.this);
-        groupNameField.setHint("   e.g Chinese friends ");
+        groupNameField.setHint("\t\t\t\t e.g Chinese friends ");
         builder.setView(groupNameField);
 
-        builder.setPositiveButton( "Create", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton( "Create \t\t\t", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i)
             {
