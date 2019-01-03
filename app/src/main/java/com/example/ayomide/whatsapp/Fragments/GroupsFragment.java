@@ -1,15 +1,18 @@
 package com.example.ayomide.whatsapp.Fragments;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.example.ayomide.whatsapp.GroupChatActivity;
 import com.example.ayomide.whatsapp.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -54,6 +57,20 @@ public class GroupsFragment extends Fragment
 
 
         RetrieveAndDisplayGroups();
+
+
+        list_view.setOnItemClickListener( new AdapterView.OnItemClickListener() {
+            @Override
+            //i is the positon, i.e a group name is click, it will get the position of that group
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id)
+            {
+                String currentGroupName = adapterView.getItemAtPosition(position).toString();
+
+                Intent groupChatIntent = new Intent(getContext(), GroupChatActivity.class);
+                groupChatIntent.putExtra("groupName", currentGroupName);
+                startActivity(groupChatIntent);
+            }
+        } );
 
 
         return groupFragmentView;

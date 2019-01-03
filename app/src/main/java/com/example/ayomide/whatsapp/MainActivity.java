@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if((dataSnapshot.child("name").exists()))
                 {
-                    Toast.makeText(MainActivity.this, "Welcome", Toast.LENGTH_SHORT);
+                    Toast.makeText(MainActivity.this, "Welcome", Toast.LENGTH_SHORT).show();
                 }
                 else
                     {
@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity
         builder.setTitle("Enter Group Name :");
 
         final MaterialEditText groupNameField = new MaterialEditText(MainActivity.this);
-        groupNameField.setHint("e.g Chinese friends ");
+        groupNameField.setHint("   e.g Chinese friends ");
         builder.setView(groupNameField);
 
         builder.setPositiveButton( "Create", new DialogInterface.OnClickListener() {
