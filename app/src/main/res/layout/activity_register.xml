@@ -25,6 +25,7 @@
         android:layout_marginLeft="17dp"
         android:layout_marginRight="17dp"
         android:drawableStart="@drawable/ic_email_black_24dp"
+        android:drawablePadding="6dp"
         app:met_floatingLabel="normal"
         android:hint="Email"/>
 
@@ -37,6 +38,7 @@
         android:layout_marginLeft="17dp"
         android:layout_marginRight="17dp"
         android:drawableStart="@drawable/ic_lock_black_24dp"
+        android:drawablePadding="6dp"
         app:met_floatingLabel="normal"
         android:hint="Password"/>
 

@@ -36,7 +36,7 @@
                 android:layout_marginRight="17dp"
                 android:drawableStart="@drawable/ic_email_black_24dp"
                 app:met_floatingLabel="normal"
-                android:drawablePadding="5dp"
+                android:drawablePadding="6dp"
                 android:singleLine="true"
                 android:hint="Email"/>
 
@@ -50,7 +50,7 @@
                 android:layout_marginRight="17dp"
                 android:drawableStart="@drawable/ic_lock_black_24dp"
                 app:met_floatingLabel="normal"
-                android:drawablePadding="5dp"
+                android:drawablePadding="6dp"
                 android:singleLine="true"
                 android:hint="Password" />
 
@@ -74,7 +74,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/forgot_password_link"
                 android:text="Login"
-                android:textSize="26sp"
+                android:textSize="24sp"
                 android:textAllCaps="false"
                 android:layout_marginTop="4dp"
                 android:layout_marginLeft="19dp"
