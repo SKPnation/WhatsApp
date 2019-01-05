@@ -23,7 +23,7 @@ import com.rengwuxian.materialedittext.MaterialEditText;
         InitializeFields();
 
 
-        SendVerificationCodeButton.setOnClickListener( new View.OnClickListener() {
+        SendVerificationCodeButton.setOnClickListener( new View.OnClickListener(){
             @Override
             public void onClick(View view)
             {
