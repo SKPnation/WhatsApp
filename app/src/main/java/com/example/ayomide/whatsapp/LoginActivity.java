@@ -143,4 +143,5 @@ public class LoginActivity extends AppCompatActivity
     private void SendUserToPhoneLoginActivity() {
         startActivity(new Intent( LoginActivity.this, PhoneLoginActivity.class ));
     }
+
 }
