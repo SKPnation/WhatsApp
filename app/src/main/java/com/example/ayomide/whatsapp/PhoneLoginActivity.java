@@ -42,8 +42,8 @@ import java.util.concurrent.TimeUnit;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-        super.onCreate( savedInstanceState );
-        setContentView( R.layout.activity_phone_login );
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_phone_login);
 
 
         mAuth = FirebaseAuth.getInstance();
