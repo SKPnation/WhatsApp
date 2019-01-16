@@ -1,5 +1,6 @@
 package com.example.ayomide.whatsapp;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -19,6 +20,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
@@ -35,10 +39,12 @@ public class SettingsActivity extends AppCompatActivity
     private CircleImageView userProfileImage;
 
     private String currentUserID;
-    FirebaseAuth mAuth;
-    DatabaseReference RootRef;
+    private FirebaseAuth mAuth;
+    private DatabaseReference RootRef;
 
     private static final int GalleryPick = 1;
+    private StorageReference UserProfileImagesRef;
+    private ProgressDialog loadingBar;
 
 
     @Override
@@ -51,6 +57,7 @@ public class SettingsActivity extends AppCompatActivity
         mAuth = FirebaseAuth.getInstance();
         currentUserID = mAuth.getCurrentUser().getUid();
         RootRef = FirebaseDatabase.getInstance().getReference();
+        UserProfileImagesRef = FirebaseStorage.getInstance().getReference().child("Profile Images");
 
 
         InitializeFields();
@@ -89,6 +96,7 @@ public class SettingsActivity extends AppCompatActivity
         userName = findViewById( R.id.set_user_name );
         userStatus = findViewById( R.id.set_profile_status );
         userProfileImage = findViewById( R.id.set_profile_image );
+        loadingBar = new ProgressDialog(this);
     }
 
 
@@ -112,6 +120,58 @@ public class SettingsActivity extends AppCompatActivity
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE)
         {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
+
+            if(resultCode == RESULT_OK)
+            {
+                loadingBar.setTitle("Set Profile Image");
+                loadingBar.setMessage("Profile image updating, please wait...");
+                loadingBar.setCanceledOnTouchOutside(false);
+                loadingBar.show();
+
+                Uri resultUri = result.getUri();
+
+
+                StorageReference filePath = UserProfileImagesRef.child(currentUserID + ".jpg");
+
+                filePath.putFile(resultUri).addOnCompleteListener( new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task)
+                    {
+                        if(task.isSuccessful())
+                        {
+                            Toast.makeText(SettingsActivity.this, "Profile image uploaded successfully", Toast.LENGTH_SHORT).show();
+
+                            final String downloadUrl = task.getResult().getDownloadUrl().toString(); //this will get the link of the profile image from
+                                                                                                    // the firebase storage and store it in the downloadUrl variable
+                            //we get the link of the profile image and store it in the firebase database.
+                            RootRef.child("Users").child(currentUserID).child(currentUserID).child("image").setValue(downloadUrl)
+                                    .addOnCompleteListener( new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task)
+                                        {
+                                            if(task.isSuccessful())
+                                            {
+                                                loadingBar.dismiss();
+                                                Toast.makeText(SettingsActivity.this, "Image saved to database, successfully", Toast.LENGTH_SHORT).show();
+                                            }
+                                            else
+                                                {
+                                                    String message = task.getException().toString();
+                                                    Toast.makeText(SettingsActivity.this, "Error: " + message, Toast.LENGTH_SHORT).show();
+                                                    loadingBar.dismiss();
+                                                }
+                                        }
+                                    });
+                        }
+                        else
+                            {
+                                String message = task.getException().toString();
+                                Toast.makeText(SettingsActivity.this, "Error: " + message, Toast.LENGTH_SHORT).show();
+                                loadingBar.dismiss();
+                            }
+                    }
+                });
+            }
         }
 
     }
@@ -170,7 +230,7 @@ public class SettingsActivity extends AppCompatActivity
                          {
                              String retrieveUserName = dataSnapshot.child("name").getValue().toString();
                              String retrieveStatus = dataSnapshot.child("status").getValue().toString();
-                             //String retrieveProfileImage = dataSnapshot.child("image").getValue().toString();
+                             String retrieveProfileImage = dataSnapshot.child("image").getValue().toString();
 
                              userName.setText(retrieveUserName);
                              userStatus.setText(retrieveStatus);
@@ -183,6 +243,7 @@ public class SettingsActivity extends AppCompatActivity
 
                              userName.setText(retrieveUserName);
                              userStatus.setText(retrieveStatus);
+
 
                          }
                          else
