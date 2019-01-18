@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity
     FirebaseAuth mAuth;
 
     DatabaseReference RootRef;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -92,7 +94,7 @@ public class MainActivity extends AppCompatActivity
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if((dataSnapshot.child("name").exists()))
                 {
-                    Toast.makeText(MainActivity.this, "Welcome", Toast.LENGTH_SHORT).show();
+                    Log.d("TAG", "Welcome");
                 }
                 else
                     {
@@ -138,7 +140,7 @@ public class MainActivity extends AppCompatActivity
         }
         if(item.getItemId() == R.id.main_find_people_option)
         {
-
+            SendUserToFindFriendsActivity();
         }
 
         return true;
@@ -203,13 +205,18 @@ public class MainActivity extends AppCompatActivity
         loginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity( loginIntent );
         finish();
+
     }
 
     private void SendUserToSettingsActivity()
     {
         Intent settingsIntent = new Intent( MainActivity.this, SettingsActivity.class );
-        settingsIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity( settingsIntent );
-        finish();
+    }
+
+    private void SendUserToFindFriendsActivity()
+    {
+        Intent findFriendsIntent = new Intent( MainActivity.this, FindFriendsActivity.class );
+        startActivity( findFriendsIntent );
     }
 }

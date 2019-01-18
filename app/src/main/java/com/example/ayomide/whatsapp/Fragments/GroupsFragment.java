@@ -91,16 +91,14 @@ public class GroupsFragment extends Fragment
             @Override
             public void onDataChange(DataSnapshot dataSnapshot)
             {
-                //containing all our group names
-                Set<String> set = new HashSet<>();
-                //now we can read every child of the parent node; "Groups"
-                Iterator iterator = dataSnapshot.getChildren().iterator();
+                Set<String> set = new HashSet<>(); //containing all our group names
+                Iterator iterator = dataSnapshot.getChildren().iterator(); //now we can read every child of the parent node; "Groups"
 
                 while(iterator.hasNext())
                 {
-                    //to prevent the duplication of values
-                    //the .getKey() will basically get all the group names from the database
                     set.add(((DataSnapshot)iterator.next()).getKey());
+                    //to prevent the duplication of values,
+                    // the .getKey() will basically get all the group names from the database
                 }
 
                 lis_of_groups.clear();
